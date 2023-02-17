@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
+use App\Http\Middleware\AdminMiddleware;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(IndexController::class)->group(function () {
     Route::get('/', 'index')->name('index.index');
-    Route::get('/add', 'add')->name('index.add');
+//    Route::middleware(['auth', AdminMiddleware::class])->get('/add', 'add')->name('index.add');
+    Route::middleware(['auth',])->get('/articles/create', 'add')->name('article.add');
+
     Route::get('/blocked', 'blocked')->name('index.blocked');
     Route::get('/single', 'single')->name('index.single');
     Route::get('/user', 'user')->name('index.user');
@@ -31,6 +36,16 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/signup', 'signup')->name('register');
     Route::get('/logout', 'logout')->name('logout');
 });
+
+Route::get('articles/{id}', [ArticleController::class, 'show'])->name('single');
+Route::post('articles/create', [ArticleController::class, 'store'])->name('article.createPost');
+
+//Route::middleware(['auth', AdminMiddleware::class])
+//    ->controller(AdminController::class)
+//    ->prefix('/admin')
+//    ->group(function () {
+//    Route::get('/create', 'createArticle')->name('admin.create');
+//});
 
 //Route::get('/users', function () {
 //    return 'Пользователи';

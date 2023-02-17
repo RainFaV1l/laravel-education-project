@@ -59,11 +59,13 @@
         <section>
             <ul class="links">
                 <li>
-                    @if(\Illuminate\Support\Facades\Auth::user()->role == 3)
-                        <a href="#">
+                    @if(\Illuminate\Support\Facades\Auth::user()->role === 'admin')
+                        <a href="articles/create">
                             <h3>Add Post</h3>
                         </a>
                     @endif
+                </li>
+                <li>
                     <a href="#">
                         <h3>Profile</h3>
                     </a>

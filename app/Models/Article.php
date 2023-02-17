@@ -19,4 +19,12 @@ class Article extends Model
         'author_id',
         'category_id',
     ];
+
+    public function author() {
+        return $this->hasOne(User::class, 'id', 'author_id')->first();
+    }
+
+    public function category() {
+        return $this->hasOne(Category::class, 'id', 'category_id')->first();
+    }
 }

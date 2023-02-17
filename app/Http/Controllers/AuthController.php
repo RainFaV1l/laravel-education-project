@@ -29,9 +29,12 @@ class AuthController extends Controller
             return back()->withErrors($validator->errors())->withInput($request->all());;
         }
 
-        $request['password'] = Hash::make($request['password']);
+//        $request['password'] = Hash::make($request['password']);
 
-        $user = User::query()->create($request->all());
+        $user = User::query()->create(
+            ['password' => Hash::make($request['password'])] + $validator->validated()
+        );
+
         Auth::login($user);
         return redirect(route('index.index'));
 
