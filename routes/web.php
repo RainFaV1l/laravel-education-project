@@ -24,11 +24,12 @@ use Illuminate\Support\Facades\Route;
 Route::controller(IndexController::class)->group(function () {
     Route::get('/', 'index')->name('index.index');
 //    Route::middleware(['auth', AdminMiddleware::class])->get('/add', 'add')->name('index.add');
+
     Route::middleware(['auth',])->get('/articles/create', 'add')->name('article.add');
+    Route::middleware(['auth',])->get('/articles/{article:id}/update', 'update')->name('article.update');
 
     Route::get('/blocked', 'blocked')->name('index.blocked');
-    Route::get('/single', 'single')->name('index.single');
-    Route::get('/user', 'user')->name('index.user');
+    Route::get('/users/{user:id}', 'user')->name('index.user');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -37,8 +38,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/logout', 'logout')->name('logout');
 });
 
-Route::get('articles/{id}', [ArticleController::class, 'show'])->name('single');
-Route::post('articles/create', [ArticleController::class, 'store'])->name('article.createPost');
+Route::post('/articles/create', [ArticleController::class, 'store'])->name('article.createPost');
+Route::post('/articles/{article:id}/update', [ArticleController::class, 'update'])->name('article.updatePost');
+Route::get('/articles/{article:id}/delete', [ArticleController::class, 'destroy'])->name('article.delete');
+Route::get('/articles/{article:id}/block', [ArticleController::class, 'setStatusBlocked'])->name('article.block');
+Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('single');
+
 
 //Route::middleware(['auth', AdminMiddleware::class])
 //    ->controller(AdminController::class)

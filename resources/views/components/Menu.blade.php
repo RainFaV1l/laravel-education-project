@@ -59,17 +59,27 @@
         <section>
             <ul class="links">
                 <li>
-                    @if(\Illuminate\Support\Facades\Auth::user()->role === 'admin')
-                        <a href="articles/create">
-                            <h3>Add Post</h3>
-                        </a>
-                    @endif
+{{--                    @if(\Illuminate\Support\Facades\Auth::user()->role === 'admin')--}}
+{{--                        <a href="{{ 'article.create' }}">--}}
+{{--                            <h3>Add Post</h3>--}}
+{{--                        </a>--}}
+{{--                    @endif--}}
+                    <a href="{{ route('article.createPost') }}">
+                        <h3>Add Post</h3>
+                    </a>
                 </li>
                 <li>
                     <a href="#">
                         <h3>Profile</h3>
                     </a>
                 </li>
+                @if(Auth::user()->role === 'admin')
+                    <li>
+                        <a href="#">
+                            <h3>Панель-администратора</h3>
+                        </a>
+                    </li>
+                @endif
                 <li>
 
                     <a href="{{ route('logout') }}"><h3>Log Out</h3></a>

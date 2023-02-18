@@ -67,6 +67,9 @@ class ArticleController extends Controller
             return redirect()->route('index.index');
         }
 
+        $article->view_count += 1;
+        $article->save();
+
         return view('single', compact('article'));
     }
 
@@ -77,9 +80,33 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Article $article)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'min:6',
+            'content' => 'min:20',
+            'anons_title' => 'nullable',
+            'category_id' => 'required'
+        ]);
 
+        if($validator->fails()) {
+            return back()->withErrors($validator->errors())->withInput($request->all());
+        }
+
+        $validated = $validator->validated();
+
+        if($request->file('file')) {
+
+            $request->validate(['file' => 'mimes:jpg,jpeg,png']);
+
+            $path = $request->file('file')->store('public/images');
+
+            $validated['image_path'] = $path;
+        }
+
+        $article->update($validated);
+
+        return redirect()->route('single', $article);
     }
 
     /**
@@ -92,6 +119,15 @@ class ArticleController extends Controller
     {
         Article::destroy($id);
 //        Article::query()->delete($id);
-        return redirect('home');
+        return redirect(route('index.index'));
+    }
+
+    public function setStatus(Article $article, $status) {
+        $article->update(['status' => $status]);
+        return redirect()->route('index.index');
+    }
+
+    public function setStatusBlocked(Article $article) {
+        return $this->setStatus($article, 'blocked');
     }
 }

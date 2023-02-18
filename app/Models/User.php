@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -32,4 +33,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    // image_url
+    public function getImageUrlAttribute() {
+        return asset('public' . Storage::url($this->image_path));
+    }
+
+    // Связь
+    public  function articles() {
+        return $this->hasMany(Article::class, 'author_id', 'id')->get();
+    }
 }

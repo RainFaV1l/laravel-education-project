@@ -34,6 +34,11 @@ class IndexController extends Controller
         return view('add', compact('categories'));
     }
 
+    public function update(Article $article) {
+        $categories = Category::all();
+        return view('update', compact('categories', 'article'));
+    }
+
     public function blocked() {
         return view('blocked');
     }
@@ -42,7 +47,10 @@ class IndexController extends Controller
         return view('single');
     }
 
-    public function user() {
-        return view('user');
+    public function user(User $user) {
+//        if($user === null) {
+//            return redirect()->route('index.index');
+//        }
+        return view('user', compact('user'));
     }
 }
