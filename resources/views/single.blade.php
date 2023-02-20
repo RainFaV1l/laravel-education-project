@@ -43,8 +43,10 @@
                     <section class="comments">
                         <h3>Comments</h3>
                         @auth
-                        <form>
-                            <textarea></textarea><br>
+                        <form action="{{ route('comment.create') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="article_id" value="{{ $article->id }}">
+                            <textarea name="text"></textarea><br>
                             <input type="submit" class="button big fit" value="Add Comment">
                         </form>
                         @endauth

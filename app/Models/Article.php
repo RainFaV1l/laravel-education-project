@@ -42,7 +42,7 @@ class Article extends Model
 
     // Комменты
     public function comments() {
-        return $this->hasMany(ArticleComments::class)->get();
+        return $this->hasMany(ArticleComments::class)->orderByDesc('created_at')->get();
     }
 
 }

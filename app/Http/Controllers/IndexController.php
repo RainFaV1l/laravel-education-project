@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
+
+        $searchQuery = $request->get('search');
 
         //    $users = User::query()->limit(10)->offset(100)->get();
 
@@ -20,7 +22,13 @@ class IndexController extends Controller
 //            ->orderByDesc('id')
 //            ->get();
 
-        $articles = Article::query()->where('status', '=', 'published')->orderByDesc('created_at')->get();
+        $articles = Article::query()->where('status', '=', 'published');
+
+        if($searchQuery) {
+            $articles = $articles->where('title', 'LIKE', '%' . $searchQuery . '%');
+        }
+
+        $articles = $articles->orderByDesc('created_at')->paginate(2);
 
         //    return view('index', [
         //        'users' => $users,

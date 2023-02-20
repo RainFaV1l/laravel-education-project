@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\IndexController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Models\User;
@@ -43,6 +44,7 @@ Route::post('/articles/{article:id}/update', [ArticleController::class, 'update'
 Route::get('/articles/{article:id}/delete', [ArticleController::class, 'destroy'])->name('article.delete');
 Route::get('/articles/{article:id}/block', [ArticleController::class, 'setStatusBlocked'])->name('article.block');
 Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('single');
+Route::post('/comment/create', [CommentController::class, 'store'])->name('comment.create');
 
 
 //Route::middleware(['auth', AdminMiddleware::class])
